@@ -1,5 +1,6 @@
 package com.deveficiente.heuristicas.coesaobasica.validarequest.v1;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ValidaSeEstadoPertenceAPais {
@@ -35,7 +36,13 @@ public class ValidaSeEstadoPertenceAPais {
 		 * 
 		 * Caso não pertença, uma lista com uma mensagem de erro deveria ser retornada
 		 */
-		return null;
+
+		return request.getNomeEstado().filter(nomeEstado -> {
+			final Estado estado = bancoDeDadosPaisesEEstados.buscaEstadoPeloNome(nomeEstado);
+			final Pais pais = bancoDeDadosPaisesEEstados.buscaPaisPeloNome(request.getNomePais());
+
+			return !estado.pertence(pais);
+		}).map(nome -> List.of("Estado não pertence ao pais")).orElse(Collections.emptyList());
 	}
 	
 	public static void main(String[] args) {
@@ -49,5 +56,8 @@ public class ValidaSeEstadoPertenceAPais {
 		request.setEstado("Bahia");
 		
 		System.out.println(validador.valida(request));
+
+		NovaCompra brasil = new NovaCompra(new BancoDeDadosPaisesEEstados().buscaPaisPeloNome("Brasil"));
+		brasil.setEstado(new BancoDeDadosPaisesEEstados().buscaEstadoPeloNome("Bahia"));
 	}	
 }

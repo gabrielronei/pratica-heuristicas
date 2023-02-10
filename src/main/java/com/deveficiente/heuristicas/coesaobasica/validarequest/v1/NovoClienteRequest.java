@@ -1,5 +1,7 @@
 package com.deveficiente.heuristicas.coesaobasica.validarequest.v1;
 
+import java.util.Optional;
+
 public class NovoClienteRequest {
 
 	private String nomePais;
@@ -15,6 +17,12 @@ public class NovoClienteRequest {
 		//estado é opcional
 		this.nomeEstado = nomeEstado;
 	}
-	
 
+	public Optional<String> getNomeEstado() {
+		return Optional.ofNullable(this.nomeEstado);
+	}
+
+	public String getNomePais() {
+		return nomePais;
+	}
 }
